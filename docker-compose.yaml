@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    networks:
+      - wavescan
+    stdin_open: true
+    tty: true
+    ports:
+      - "8000:3000"
+  backend:
+    build: ./backend
+    networks:
+      - wavescan
+    ports:
+      - "8001:5000"
+    environment:
+      - DB_URL=mongodb://db/Portfolio-Fundations
+    depends_on:
+      - database
+  database:
+    image: mongo:4.0-xenial
+    networks:
+      - wavescan
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
+    driver: local
+networks:
+  wavescan:
+    driver: bridge
+    
