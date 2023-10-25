@@ -1,22 +1,35 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
 const app = express();
-const port = 8081; // Vous pouvez choisir n'importe quel port que vous préférez
 
-// Middleware pour gérer les requêtes JSON
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Endpoint racine
 app.get('/', (req, res) => {
-  res.send('Bienvenue sur votre serveur Express !');
+  res.send('internet speed test server /donwload /upload');
 });
 
-// Exemple de route avec un paramètre
-app.get('/api/:parametre', (req, res) => {
-  const parametre = req.params.parametre;
-  res.json({ message: `Vous avez fourni le paramètre : ${parametre}` });
+app.use('/download', express.static('./src/utils'));
+
+app.get('/download', (req, res) => {
+const filePath = path.join(__dirname, 'src', 'utils', '100MB.dat');
+  res.download(filePath, '100MB.dat', (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error downloading file');
+    }
+  });
 });
 
-// Serveur écoutant sur le port spécifié
+
+const multer = require('multer');
+const upload = multer({ dest: './src/utils' });
+
+const uploadController = require('./src/controllers/uploadController');
+app.post('/upload', upload.single('file'), uploadController.uploadFile);
+
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`Serveur Express en cours d'exécution sur le port ${port}`);
+  console.log(`Server is running on port : ${port}`);
 });
