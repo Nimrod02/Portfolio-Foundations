@@ -3,7 +3,7 @@ const fs = require('fs');
 
 exports.downloadFile = (req, res) => {
   const fileName = '100MB.dat';
-  const filePath = path.join(__dirname, 'utils', fileName);
+  const filePath = path.join(__dirname, '../utils', fileName);
 
   console.log('Requested file path:', filePath); 
 

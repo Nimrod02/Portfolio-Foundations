@@ -1,18 +1,25 @@
-const fs = require('fs');
+const express = require('express');
+const multer  = require('multer');
+const path = require('path');
 
-const uploadFile = (req, res) => {
-  const file = req.body.file;
-  const fileName = req.body.fileName;
+const upload = multer({ dest: path.join(__dirname, '../utils') });
+const uploadFile = express();
 
-  fs.writeFile(fileName, file, (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error uploading file');
-    } else {
-      res.status(200).send('File uploaded successfully');
-    }
-  });
-};
+uploadFile.post('/', upload.single('10MB.dat'), (req, res) => {
+  console.log(req.file);
+  if (!req.file) {
+    console.log("No file received");
+    return res.send({
+      success: false
+    });
+
+  } else {
+    console.log('file received successfully');
+    return res.send({
+      success: true
+    })
+  }
+});
 
 
-module.exports = { uploadFile };
+module.exports = uploadFile;
