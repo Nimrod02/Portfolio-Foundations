@@ -37,20 +37,27 @@ function Speedtest() {
     setIsIdle(false);
     const wifiAvailable = await isWifiAvailable();
     if (wifiAvailable.success === true) {
-      const uploadTest = await upSpeedTest();
-      if (uploadTest.success === true) {
-        const speed = uploadTest.speed;
+      const downloadTest = await downSpeedTest();
+      if (downloadTest.success === true) {
+        const speed = downloadTest.speed;
         setDownloadSpeed(speed);
-        const signalInfo = await getSpeedtestInfo();
-        if (signalInfo.success === true) {
-          setSSID(signalInfo.ssid);
-          setIpAddress(signalInfo.ipAddress);
-          setIsLoading(false);
-          return;
-        } else {
-          setIsIdle(true);
-          setIsLoading(false);
-          return;
+        const uploadTest = await upSpeedTest();
+        if (uploadTest.success === true) {
+          const speed = uploadTest.speed;
+          setUploadSpeed(speed);
+          const info = await getSpeedtestInfo();
+          if (info.success === true) {
+            const ssid = info.ssid;
+            const ipAddress = info.ipAddress;
+            setSSID(ssid);
+            setIpAddress(ipAddress);
+            setIsLoading(false);
+            return;
+          } else {
+            setIsIdle(true);
+            setIsLoading(false);
+            return;
+          }
         }
       } else {
         setIsIdle(true);
