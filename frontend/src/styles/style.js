@@ -6,7 +6,7 @@ const style = StyleSheet.create({
     backgroundColor: "blue",
   },
   body: {
-    backgroundColor: "white",
+    backgroundColor: "#112e96",
     flex: 0.91,
     justifyContent: "center",
     alignItems: "center",
