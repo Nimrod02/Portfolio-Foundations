@@ -1,3 +1,5 @@
+// Speedtest Page
+// imports
 // View
 import React, {useState} from "react";
 import {
@@ -7,110 +9,54 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from "react-native";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 // Components and utils
 import TopBar from "../components/topBar";
 import { 
-  downSpeedTest, 
-  getSpeedtestInfo, 
-  isWifiAvailable, 
-  upSpeedTest
+  realizeSpeedtest,
 } from "../utils/speedTest";
 
 // Styles
-import styles from "../styles/style";
+import style from "../styles/style";
 import speedtestStyle from "../styles/speedtestStyle";
 
 
 function Speedtest() {
   // States
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [isIdle, setIsIdle] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [downloadSpeed, setDownloadSpeed] = useState(0);
-  const [uploadSpeed, setUploadSpeed] = useState(57.25);
-  const [ssid, setSSID] = useState("");
-  const [ipAddress, setIpAddress] = useState("");
+
+
+  // Functions
+  const toggleTheme = (isDarkMode) => {
+    setIsDarkMode(isDarkMode);
+    console.log("changed theme");
+  };
 
   const HandleRunButton = async () => {
-    setIsLoading(true);
     setIsIdle(false);
-    const wifiAvailable = await isWifiAvailable();
-    if (wifiAvailable.success === true) {
-      const downloadTest = await downSpeedTest();
-      if (downloadTest.success === true) {
-        const speed = downloadTest.speed;
-        setDownloadSpeed(speed);
-        const uploadTest = await upSpeedTest();
-        if (uploadTest.success === true) {
-          const speed = uploadTest.speed;
-          setUploadSpeed(speed);
-          const info = await getSpeedtestInfo();
-          if (info.success === true) {
-            const ssid = info.ssid;
-            const ipAddress = info.ipAddress;
-            setSSID(ssid);
-            setIpAddress(ipAddress);
-            setIsLoading(false);
-            return;
-          } else {
-            setIsIdle(true);
-            setIsLoading(false);
-            return;
-          }
-        }
-      } else {
-        setIsIdle(true);
-        setIsLoading(false);
-        return;
-      }
-    } else {
-      setIsIdle(true);
-      setIsLoading(false);
-      return;
-    }
-  }
-
-  const HandleCloseButton = async () => {
-    setIsIdle(true);
-    setDownloadSpeed(0);
-    setUploadSpeed(0);
-    setSSID("");
-    setIpAddress("");
+    setIsLoading(true);
+    await realizeSpeedtest();
+    setIsLoading(false);
   }
 
   // View
     return (
-      <SafeAreaView style={styles.container}>
-        <TopBar />
-        <View style={styles.body}>
+      <SafeAreaView style={[style.Container, isDarkMode && style.DarkmodeContainer]}>
+        <TopBar name={"SPEED TEST"} isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        <View style={style.body}>
           {isIdle ? (
             <TouchableOpacity style={speedtestStyle.RunButton} onPress={HandleRunButton} >
-              <Text style={speedtestStyle.RunText}>Run</Text>
+              <Text style={speedtestStyle.RunText}>RUN</Text>
             </TouchableOpacity>
           ) : (
             isLoading ? (
                 <View style={speedtestStyle.ProgressionContainer}>
                   <ActivityIndicator style={speedtestStyle.ProgressionCircle} size={75} color="#04f6f7" />
-                  <Text style={speedtestStyle.ProgressionText}>45%</Text>
                 </View>
             ) : (
-              <View style={speedtestStyle.Resume}> 
-                <View style={speedtestStyle.SpeedContainer}>
-                  <View style={speedtestStyle.DownSpeedContainer}>
-                    <MaterialCommunityIcons name="arrow-down-bold-circle-outline" size={40} color="#04f6f7" />
-                    <Text style={speedtestStyle.DownSpeedText}>{downloadSpeed.toFixed(2)} Mbps</Text>
-                  </View>
-                  <View style={speedtestStyle.UpSpeedContainer}>
-                    <MaterialCommunityIcons name="arrow-up-bold-circle-outline" size={40} color="#04f6f7" />
-                    <Text style={speedtestStyle.UpSpeedText}>{uploadSpeed.toFixed(2)} Mbps</Text>
-                  </View>
-                </View>
-                <View style={speedtestStyle.InfoContainer}>
-                  <Text style={speedtestStyle.InfoText}>SSID: {ssid}</Text>
-                  <Text style={speedtestStyle.InfoText}>IP Address: {ipAddress}</Text>
-                </View>
-              </View>
+              <SpeedSummary />
             )
           )}
         </View>

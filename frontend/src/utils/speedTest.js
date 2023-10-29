@@ -4,13 +4,13 @@ import * as FileSystem from 'expo-file-system';
 
 // Test download speed
 // Returns: if successful - {success=true, downloadSpeed}
-//          if unsuccessful - {success=false, error}
+//          if unsuccessful - {success=false, error}s
 const downSpeedTest = async () => {
   try {
     console.log('Start download speed test.');
     const startDownloadTime = Date.now();
     console.log('Testing...');
-    const res = await axios.get('http://192.168.1.123:3000/download');
+    const res = await axios.get('http://192.168.1.164:3001/download');
     console.log('Download complete.');
     const endDownloadTime = Date.now();
     const downloadTime = endDownloadTime - startDownloadTime;
@@ -71,7 +71,7 @@ const upSpeedTest = async () => {
     const formData = new FormData();
     formData.append('10MB.dat', { uri: fileUri, name: '10MB.dat', type: 'multipart/form-data' });
 
-    const response = await axios.post('http://192.168.1.123:3000/upload', formData); // Fixed the URL and added formData
+    const response = await axios.post('http://192.168.1.164:3001/upload', formData); // Fixed the URL and added formData
     console.log('Uploading file...');
     
     if (response.status === 200) { // Check the response status
