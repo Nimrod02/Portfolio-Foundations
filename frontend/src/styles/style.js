@@ -4,10 +4,12 @@ import { StyleSheet } from "react-native";
 const style = StyleSheet.create({
   Container: {
     flex: 1,
-    backgroundColor: "grey",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#27272a",
   },
   body: {
-    backgroundColor: "#1d3557",
     flex: 0.95,
     justifyContent: "center",
     alignItems: "center",
@@ -22,7 +24,7 @@ const style = StyleSheet.create({
 export default style;
 
 // Darkmode color palette:
-//    #1d3557 - body background
+//    #1d3557 / #27272a - body background
 //    #1d2d44 - detail section / top bar background
 //    #e63946 - upload arrow
 //    #48cae4 - download arrow

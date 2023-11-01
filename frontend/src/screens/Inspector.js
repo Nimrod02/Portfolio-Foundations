@@ -14,7 +14,7 @@ function Inspector() {
 
 // View
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.Container}>
       <TopBar />
       <View style={styles.body}>
         <Text style={inspectorStyle.title}>WiFi Inspector</Text>

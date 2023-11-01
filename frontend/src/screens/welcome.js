@@ -1,28 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View, Image } from 'react-native';
+import welcomeStyle from '../styles/welcomeStyle';
+
 
 const Welcome = ( { navigation } ) => {
 
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Welcome to my app!</Text>
-      <Button title="Continue" onPress={() => navigation.navigate('Home')} />
-    </View>
+    <SafeAreaView style={welcomeStyle.Container}>
+
+      <View style={welcomeStyle.welcomeContainer}>
+        <View style={welcomeStyle.welcomeTextContainer}>
+          <Text style={welcomeStyle.welcomeText}>Welcome to</Text>
+          <Image style={welcomeStyle.logo} source={require('../styles/images/logo-white.png')} />
+          <Text style={welcomeStyle.welcomeTextTitle}>WaveScan</Text>
+          <Text style={welcomeStyle.welcomeTextDescription}>
+            WaveScan is a mobile application that allows you to scan your network and save your results.
+          </Text>
+        </View>
+      </View>  
+
+      <View style={welcomeStyle.buttonsContainer}> 
+        <Text style={welcomeStyle.registerText}>Register to save your speed tests and get even more data!</Text>
+        <View style={welcomeStyle.registerButtonContainer}>
+          <TouchableOpacity style={welcomeStyle.btn} onPress={() => navigation.navigate('Home')}>
+            <Text style={welcomeStyle.buttonText}>Register</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={welcomeStyle.continueButtonContainer}>
+          <TouchableOpacity style={welcomeStyle.btn} title="Continue" onPress={() => navigation.navigate('Home')}>
+            <Text style={welcomeStyle.buttonText}>Continue</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
 
 export default Welcome;

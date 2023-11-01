@@ -3,40 +3,43 @@ import { StyleSheet } from "react-native";
 
 const topbarStyle = StyleSheet.create({
   
-  // Base style and light mode
+  // Base style and dark mode
   Container: {
     flex: 0.05,
+    width: '100%',
     flexDirection: 'row',
-    backgroundColor: 'grey',
+    backgroundColor: '#27272a',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  Logo: {
+
+  closeBtn: {
+    position: 'absolute',
+    left: 15,
+  },
+
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  logo: {
     marginRight: 10,
   },
-  Title: {
+
+  title: {
     fontSize: 25,
     fontWeight: 'bold',
     color: 'white',
   },
-  DarkmodeButton: {
+
+  paraBtn: {
     position: 'absolute',
-    right: 20,
-    bottom: 5,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 7,
+    right: 15,
   },
-  ThemeButtonText: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#1d2d44',
-  },
-
-
-  // Dark mode
-  DarkmodeContainer: {
-    backgroundColor: '#1d2d44',
+  paraBtnMoved: {
+    position: 'absolute',
+    left: 135,
   },
 });
 

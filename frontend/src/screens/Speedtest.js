@@ -7,49 +7,55 @@ import {
   SafeAreaView,
   View,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 
 // Components and utils
 import TopBar from "../components/topBar";
+import SideBar from "../components/Sidebar";
 import { 
-  realizeSpeedtest,
+  downSpeedTest, 
+  getSpeedtestInfo, 
+  isWifiAvailable, 
+  upSpeedTest
 } from "../utils/speedTest";
 
 // Styles
-import style from "../styles/style";
 import speedtestStyle from "../styles/speedtestStyle";
 
 
 function Speedtest() {
   // States
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const [isIdle, setIsIdle] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [downloadSpeed, setDownloadSpeed] = useState(0);
+  const [uploadSpeed, setUploadSpeed] = useState(57.25);
+  const [ssid, setSSID] = useState("");
+  const [ipAddress, setIpAddress] = useState("");
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Functions
-  const toggleTheme = (isDarkMode) => {
-    setIsDarkMode(isDarkMode);
-    console.log("changed theme");
+  const toggleSidebar = () => {
+    setIsSidebarOpen(isSidebarOpen => !isSidebarOpen);
+    console.log('onToggleSidebar called');
   };
-
-  const HandleRunButton = async () => {
-    setIsIdle(false);
-    setIsLoading(true);
-    await realizeSpeedtest();
-    setIsLoading(false);
-  }
 
   // View
     return (
-      <SafeAreaView style={[style.Container, isDarkMode && style.DarkmodeContainer]}>
-        <TopBar name={"SPEED TEST"} isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-        <View style={style.body}>
+      <SafeAreaView style={speedtestStyle.Container}>
+        <TopBar 
+          name={"SPEEDTEST"}
+          onToggleSidebar={toggleSidebar}
+          isOpen={isSidebarOpen}
+        />
+        <View style={speedtestStyle.body}>
+        <SideBar isOpen={isSidebarOpen} />
           {isIdle ? (
-            <TouchableOpacity style={speedtestStyle.RunButton} onPress={HandleRunButton} >
-              <Text style={speedtestStyle.RunText}>RUN</Text>
-            </TouchableOpacity>
+            <View style={speedtestStyle.idleContainer}>
+              <TouchableOpacity style={speedtestStyle.RunButton} >
+                <Text style={speedtestStyle.RunText}>RUN</Text>
+              </TouchableOpacity>
+            </View>
           ) : (
             isLoading ? (
                 <View style={speedtestStyle.ProgressionContainer}>

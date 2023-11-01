@@ -2,25 +2,41 @@
 // Path: frontend/src/components/topBar.js
 
 // Imports
-import { Text, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { Text, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import topbarStyle from '../styles/topBarStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const TopBar = (props) => {
-  const { isDarkMode, toggleTheme } = props;
+const TopBar = ({ onToggleSidebar, name, isOpen }) => {
 
-  const handleToggleTheme = () => {
-    toggleTheme(!isDarkMode);
-    console.log("Dark mode: " + isDarkMode);
-  };
+
 
   return (
-    <SafeAreaView style={[topbarStyle.Container, isDarkMode && topbarStyle.DarkmodeContainer]}>
-      <MaterialCommunityIcons style={topbarStyle.Logo} size={24} color={"white"} name="speedometer" />
-      <Text style={topbarStyle.Title}>{props.name}</Text>
-      <TouchableOpacity style={topbarStyle.DarkmodeButton} onPress={handleToggleTheme}>
-        <MaterialCommunityIcons size={20} color={"#1d2d44"} name="theme-light-dark" />
-      </TouchableOpacity>
+    <SafeAreaView style={topbarStyle.Container}>
+      
+      {/* <TouchableOpacity style={topbarStyle.closeBtn} onPress={handleCloseBtn}>
+        <MaterialCommunityIcons style={topbarStyle.closeIcon} size={27} color={"white"} name="close" />
+      </TouchableOpacity> */}
+
+      {/* {!isOpen && (
+        <View style={topbarStyle.titleContainer}>
+          <MaterialCommunityIcons style={topbarStyle.logo} size={27} color={"white"} name="speedometer" />
+          <Text style={topbarStyle.title}>{name}</Text>
+        </View>
+      )} */}
+
+
+      {!isOpen && (
+        <TouchableOpacity style={topbarStyle.paraBtn} onPress={onToggleSidebar}>
+          <MaterialCommunityIcons size={27} color={"white"} name="dots-horizontal" />
+        </TouchableOpacity>
+      )}
+      {isOpen && (
+        <TouchableOpacity style={topbarStyle.paraBtnMoved} onPress={onToggleSidebar}>
+          <MaterialCommunityIcons size={35} color={"white"} name="dots-horizontal" />
+        </TouchableOpacity>
+      )}
+
     </SafeAreaView>
   );
 };
